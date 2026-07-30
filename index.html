@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truva Home Loans Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --orange: #FF6F38;
+    --orange-light: #FFF2ED;
+    --orange-dark: #D15B2E;
+    --dark: #262626;
+    --grey: #6B6B6B;
+    --line: #EAD9D0;
+    --bg: #FAF7F5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+  header.app {
+    background: #fff;
+    border-bottom: 3px solid var(--orange);
+    padding: 14px 28px;
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  header.app h1 { font-size: 17px; letter-spacing: 0.08em; color: var(--orange); text-transform: uppercase; }
+  header.app span { font-size: 13px; color: var(--grey); }
+  .wrap {
+    padding: 24px 36px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .preview-panel {
+    margin-top: 32px;
+  }
+  .preview-frame {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px;
+    overflow: hidden;
+  }
+  .preview-frame canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 14px rgba(38,38,38,0.10);
+  }
+
+  .panel {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .panel h2 {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 14px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--orange-light);
+  }
+  .field { margin-bottom: 12px; }
+  .field label {
+    display: block; font-size: 11.5px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--grey); margin-bottom: 4px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 9px 11px;
+    border: 1.5px solid var(--line); border-radius: 7px;
+    font-size: 14px; font-family: inherit; color: var(--dark);
+    background: #fff;
+  }
+  .field input[type=file] { padding: 7px 9px; font-size: 13px; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: 2px solid var(--orange); outline-offset: 1px; border-color: var(--orange);
+  }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+  .row5 { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 2fr; gap: 10px; }
+  .row6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .row-property { display: grid; grid-template-columns: 1fr 3fr 1fr 1fr; gap: 10px; }
+  .row-compact3 { display: grid; grid-template-columns: 160px 160px 200px 3fr; gap: 10px; }
+  .row-company { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+  .section-divider { margin: 20px 0 16px; border-top: 1.5px solid var(--line); }
+  .ltv-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--orange-light); border-radius: 999px;
+    padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--orange-dark);
+    margin-bottom: 12px;
+  }
+  .ltv-pill b { font-size: 16px; color: var(--orange); }
+  .section-gap { margin-top: 20px; }
+  .muted-note {
+    font-size: 12px; color: var(--grey); background: var(--bg);
+    border: 1px dashed var(--line); border-radius: 7px; padding: 9px 12px;
+    margin-bottom: 12px;
+  }
+  .auto-badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    background: var(--orange); color: #fff; border-radius: 4px;
+    padding: 2px 6px; margin-left: 6px; letter-spacing: 0.05em;
+  }
+  .btns { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  button.primary, button.secondary {
+    flex: 1; min-width: 150px;
+    padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    transition: transform 0.06s ease, box-shadow 0.15s ease;
+  }
+  button.primary {
+    background: var(--orange); color: #fff; border: none;
+    box-shadow: 0 2px 8px rgba(240,90,40,0.35);
+  }
+  button.primary:hover { background: var(--orange-dark); }
+  button.primary:active { transform: scale(0.98); }
+  button.secondary {
+    background: #fff; color: var(--orange); border: 2px solid var(--orange);
+  }
+  button.secondary:hover { background: var(--orange-light); }
+  button:focus-visible { outline: 3px solid var(--orange-dark); outline-offset: 2px; }
+  .hint { font-size: 11.5px; color: var(--grey); margin-top: 8px; line-height: 1.4; }
+
+
+  .preview-label {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--grey); margin-bottom: 10px; font-weight: 600;
+  }
+
+  /* ---- CO-APPLICANT CARDS ---- */
+  .co-card {
+    border: 1.5px solid var(--line); border-radius: 12px;
+    overflow: hidden; margin-bottom: 16px; background: #fff;
+  }
+  .co-card-tabs {
+    display: flex; border-bottom: 1.5px solid var(--line);
+    background: var(--bg);
+  }
+  .co-card-tab {
+    padding: 10px 20px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--grey);
+    border: none; background: none; cursor: pointer; font-family: inherit;
+    border-bottom: 3px solid transparent; margin-bottom: -1.5px;
+    transition: color 0.15s;
+  }
+  .co-card-tab.active { color: var(--orange); border-bottom-color: var(--orange); background: #fff; }
+  .co-card-tab-pane { display: none; padding: 20px 24px; }
+  .co-card-tab-pane.active { display: block; }
+  .co-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px 0;
+  }
+  .co-card-title { font-size: 13px; font-weight: 700; color: var(--dark); }
+  .co-remove { background: none; border: none; font-size: 18px; color: var(--grey); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .co-remove:hover { color: #C0392B; background: #FDF0EF; }
+  .wiz-add-coapplicant {
+    width: 100%; padding: 14px; background: #fff; border: 2px dashed var(--line);
+    border-radius: 10px; font-size: 14px; font-weight: 600; font-family: inherit;
+    color: var(--orange); cursor: pointer; transition: all 0.15s; text-align: center;
+  }
+  .wiz-add-coapplicant:hover { background: var(--orange-light); border-color: var(--orange); }
+  .co-field-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .co-field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
+  .co-field-wide { flex: 2; }
+  .co-field label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); }
+  .co-input {
+    font-family: inherit; border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; font-size: 14px; color: var(--dark); background: #fff;
+    width: 100%; transition: border-color 0.15s;
+  }
+  .co-input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-light); }
+
+  .wiz-steps {
+    display: flex; align-items: center; padding: 28px 0 24px;
+    max-width: 860px; margin: 0 auto;
+  }
+  .wiz-step {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; opacity: 0.4; transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+  .wiz-step.active, .wiz-step.done { opacity: 1; }
+  .wiz-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; font-family: inherit;
+    background: var(--line); color: var(--grey); transition: all 0.2s;
+  }
+  .wiz-step.active .wiz-num { background: var(--orange); color: #fff; box-shadow: 0 0 0 4px var(--orange-light); }
+  .wiz-step.done .wiz-num { background: #27AE60; color: #fff; }
+  .wiz-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grey); white-space: nowrap; }
+  .wiz-step.active .wiz-label { color: var(--orange); }
+  .wiz-step.done .wiz-label { color: #27AE60; }
+  .wiz-connector { flex: 1; height: 2px; background: var(--line); margin: 0 4px; margin-bottom: 18px; }
+
+  .wiz-pane { display: none; }
+  .wiz-pane.active { display: block; }
+
+  .wiz-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 16px;
+    overflow: hidden; max-width: 860px; margin: 0 auto;
+    box-shadow: 0 2px 20px rgba(38,38,38,0.06);
+  }
+  .wiz-card-header {
+    padding: 36px 40px 28px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(135deg, #fff 60%, var(--orange-light));
+  }
+  .wiz-card-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  .wiz-card-title { font-size: 26px; font-weight: 700; color: var(--dark); margin-bottom: 6px; letter-spacing: -0.3px; }
+  .wiz-card-sub { font-size: 14px; color: var(--grey); font-weight: 400; }
+
+  .wiz-fields { padding: 32px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .wiz-field-full { display: flex; flex-direction: column; gap: 6px; }
+  .wiz-field-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .wiz-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 160px; }
+  .wiz-field-wide { flex: 2.5; }
+  .wiz-field label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); }
+  .wiz-input, .wiz-input-lg, .wiz-textarea {
+    font-family: inherit; border: 1.5px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; font-size: 15px; color: var(--dark);
+    background: #fff; transition: border-color 0.15s, box-shadow 0.15s; width: 100%;
+  }
+  .wiz-input-lg { font-size: 18px; padding: 14px 16px; font-weight: 600; }
+  .wiz-textarea { min-height: 100px; resize: vertical; }
+  .wiz-input:focus, .wiz-input-lg:focus, .wiz-textarea:focus {
+    outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-light);
+  }
+  .wiz-ltv-display .wiz-ltv-pill {
+    display: inline-flex; align-items: center; padding: 12px 18px;
+    background: var(--orange-light); border-radius: 10px; border: 1.5px solid var(--orange);
+    font-size: 20px; font-weight: 700; color: var(--orange); letter-spacing: -0.3px;
+  }
+  .wiz-muted-note { background: var(--bg); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: var(--grey); border: 1px dashed var(--line); }
+
+  .wiz-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 860px; margin: 20px auto 0; padding: 0 4px;
+  }
+  .wiz-nav-center { flex: 1; display: flex; justify-content: center; }
+  .wiz-btn-back {
+    padding: 12px 28px; background: #fff; border: 1.5px solid var(--line);
+    border-radius: 10px; font-size: 14px; font-weight: 600; font-family: inherit;
+    color: var(--grey); cursor: pointer; transition: all 0.15s;
+  }
+  .wiz-btn-back:hover { border-color: var(--orange); color: var(--orange); }
+  .wiz-btn-next {
+    padding: 12px 36px; background: var(--orange); border: none;
+    border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit;
+    color: #fff; cursor: pointer; transition: background 0.15s;
+    box-shadow: 0 2px 8px rgba(255,111,56,0.35);
+  }
+  .wiz-btn-next:hover { background: var(--orange-dark); }
+
+  /* hide old grid layout classes — no longer needed in wizard */
+  .wrap { padding: 0 36px 36px; max-width: 960px; margin: 0 auto; }
+
+  .tab-nav {
+    display: flex; gap: 0; border-bottom: 2px solid var(--line);
+    background: #fff; padding: 0 36px;
+  }
+  .tab-btn {
+    padding: 13px 24px; font-size: 13px; font-weight: 600;
+    font-family: inherit; background: none; border: none;
+    color: var(--grey); cursor: pointer; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; transition: color 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .tab-btn:hover { color: var(--orange); }
+  .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ---- OFFER COMPARISON TABLE ---- */
+  .og-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .og-table th, .og-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .og-table thead tr { background: var(--bg); }
+  .og-table thead th { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey); }
+  .og-table thead th.bank-col { text-align: center; font-size: 13px; font-weight: 700; color: var(--dark); letter-spacing: 0; text-transform: none; border-left: 1px solid var(--line); }
+  .og-table thead th.bank-col.best { background: var(--orange-light); color: var(--orange); }
+  .og-table td.row-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--grey); background: var(--bg); min-width: 160px; }
+  .og-table td.bank-cell { text-align: center; border-left: 1px solid var(--line); font-weight: 600; color: var(--dark); }
+  .og-table td.bank-cell.best { background: var(--orange-light); }
+  .og-table td.bank-cell.roi { font-size: 16px; font-weight: 700; }
+  .og-table td.bank-cell.roi.best { color: var(--orange); }
+  .og-table td.bank-cell.fits { color: #27AE60; font-weight: 700; }
+  .og-table td.bank-cell.exceeds { color: #C0392B; font-weight: 700; }
+  .og-table td.bank-cell.ineligible { color: var(--grey); font-style: italic; font-weight: 400; }
+  .og-table tbody tr:hover { background: #FAFAFA; }
+  .og-table .section-row td { background: var(--bg); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); padding: 8px 14px 4px; border-bottom: none; }
+
+  .offer-wrap { padding: 24px 36px; max-width: 1600px; margin: 0 auto; }
+  .offer-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 20px; }
+  .offer-derived {
+    background: var(--orange-light); border-radius: 10px;
+    padding: 14px 20px; display: flex; gap: 32px; align-items: center;
+    margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .offer-derived .d-item { display: flex; flex-direction: column; gap: 3px; }
+  .offer-derived .d-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+  .offer-derived .d-value { font-size: 16px; font-weight: 700; color: var(--dark); }
+  .offer-preview-label {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--grey); margin-bottom: 10px; font-weight: 600;
+  }
+  .offer-preview-frame {
+    background: #fff; border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px; overflow: hidden; margin-top: 24px;
+  }
+  .offer-preview-frame canvas {
+    display: block; width: 100%; height: auto;
+    border-radius: 6px; box-shadow: 0 2px 14px rgba(38,38,38,0.10);
+  }
+</style>
+</head>
+<body>
+
+<header class="app">
+  <h1>Truva Home Loans</h1>
+</header>
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('fact-sheet')">Fact Sheet</button>
+  <button class="tab-btn" onclick="switchTab('offer-gen')">Offer Generator</button>
+</nav>
+
+<div id="tab-fact-sheet" class="tab-pane active">
+<div class="wrap">
+  <!-- ============ FORM ============ -->
+  <div>
+
+    <!-- WIZARD STEP INDICATOR -->
+    <div class="wiz-steps" id="wizSteps">
+      <div class="wiz-step active" data-step="0"><span class="wiz-num">1</span><span class="wiz-label">Customer</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="1"><span class="wiz-num">2</span><span class="wiz-label">Loan</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="2"><span class="wiz-num">3</span><span class="wiz-label">Property</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="3"><span class="wiz-num">4</span><span class="wiz-label">Employment</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="4"><span class="wiz-num">5</span><span class="wiz-label">Financials</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="5"><span class="wiz-num">6</span><span class="wiz-label">Co-Applicants</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="6"><span class="wiz-num">7</span><span class="wiz-label">Notes</span></div>
+      <div class="wiz-connector"></div>
+      <div class="wiz-step" data-step="7"><span class="wiz-num">8</span><span class="wiz-label">Preview</span></div>
+    </div>
+
+    <!-- STEP 1: CUSTOMER -->
+    <div class="wiz-pane active" id="wiz-0">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 1 of 7</div>
+          <h2 class="wiz-card-title">A little bit about yourself</h2>
+          <p class="wiz-card-sub">Start with the applicant's basic profile.</p>
+        </div>
+        <div class="wiz-fields">
+          <div class="wiz-field-full">
+            <label for="name">Full Name</label>
+            <input id="name" type="text" value="Rajdeep Chavan" class="wiz-input-lg" autocomplete="off">
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="wiz-field" style="flex:0 0 100px;">
+              <label for="age">Age</label>
+              <input id="age" type="number" value="53" class="wiz-input">
+            </div>
+            <div class="wiz-field" style="flex:0 0 130px;">
+              <label for="cibil">CIBIL Score</label>
+              <input id="cibil" type="number" value="750" class="wiz-input">
+            </div>
+            <div class="wiz-field" style="flex:0 0 220px;">
+              <label for="propOwner">Residential Properties Owned</label>
+              <select id="propOwner" class="wiz-input">
+                <option value="">—</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2 or more">2 or more</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: LOAN -->
+    <div class="wiz-pane" id="wiz-1">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 2 of 7</div>
+          <h2 class="wiz-card-title">Loan details</h2>
+          <p class="wiz-card-sub">Enter the loan amount and property value.</p>
+        </div>
+        <div class="wiz-fields">
+          <div class="wiz-field-row">
+            <div class="wiz-field">
+              <label for="loan">Loan Required (₹ Cr)</label>
+              <input id="loan" type="number" step="0.01" value="4.50" class="wiz-input-lg">
+            </div>
+            <div class="wiz-field">
+              <label for="av">Agreement Value (₹ Cr)</label>
+              <input id="av" type="number" step="0.01" value="4.80" class="wiz-input-lg">
+            </div>
+            <div class="wiz-field" style="display:flex;align-items:center;justify-content:center;padding-top:22px;">
+              <div class="ltv-pill" style="font-size:15px;padding:11px 20px;">LTV &nbsp;<b id="ltvOut" style="font-size:18px;">—</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: PROPERTY -->
+    <div class="wiz-pane" id="wiz-2">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 3 of 7</div>
+          <h2 class="wiz-card-title">Property details</h2>
+          <p class="wiz-card-sub">Details about the property being financed.</p>
+        </div>
+        <div class="wiz-fields">
+          <div style="display:grid;grid-template-columns:1fr 2.5fr;gap:16px;">
+            <div class="wiz-field">
+              <label for="flatWing">Flat / Wing</label>
+              <input id="flatWing" type="text" value="505, Tower B" class="wiz-input">
+            </div>
+            <div class="wiz-field">
+              <label for="society">Society</label>
+              <input id="society" type="text" value="Oberoi Woods, Goregaon (E), Mumbai" class="wiz-input">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 2.5fr;gap:16px;">
+            <div class="wiz-field">
+              <label for="area">Carpet Area</label>
+              <input id="area" type="text" value="997 sq ft" class="wiz-input">
+            </div>
+            <div class="wiz-field">
+              <label for="parking">Parking and Type</label>
+              <input id="parking" type="text" placeholder="e.g. 1 covered" value="" class="wiz-input">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: EMPLOYMENT -->
+    <div class="wiz-pane" id="wiz-3">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 4 of 7</div>
+          <h2 class="wiz-card-title">Employment</h2>
+          <p class="wiz-card-sub">Where does the applicant work?</p>
+        </div>
+        <div class="wiz-fields">
+          <div class="wiz-field-row">
+            <div class="wiz-field">
+              <label for="profile">Work Profile</label>
+              <select id="profile" class="wiz-input">
+                <option value="Salaried">Salaried</option>
+                <option value="Sole Proprietor">Sole Proprietor</option>
+                <option value="Freelancer">Freelancer</option>
+                <option value="Business Owner - Pvt Ltd">Business Owner - Pvt Ltd</option>
+                <option value="Not Employed">Not Employed</option>
+              </select>
+            </div>
+            <div class="wiz-field wiz-field-wide" id="businessField">
+              <label for="business">Nature of Business</label>
+              <input id="business" type="text" value="Civil Works — Government Contracts" class="wiz-input">
+            </div>
+          </div>
+          <div class="wiz-field-row" id="mainEmpRow">
+            <div class="wiz-field wiz-field-wide">
+              <label for="company">Company Name</label>
+              <input id="company" type="text" value="" class="wiz-input">
+            </div>
+            <div class="wiz-field">
+              <label for="m_vintage">Years at Company</label>
+              <input id="m_vintage" type="text" value="" class="wiz-input">
+            </div>
+          </div>
+          <div class="wiz-field-row" id="gstField" style="display:none;">
+            <div class="wiz-field" style="flex:0 0 200px;">
+              <label for="m_gst">GST Applicable</label>
+              <select id="m_gst" class="wiz-input">
+                <option value="">—</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: FINANCIALS -->
+    <div class="wiz-pane" id="wiz-4">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 5 of 7</div>
+          <h2 class="wiz-card-title">Financials</h2>
+          <p class="wiz-card-sub">Income details for the main applicant.</p>
+        </div>
+        <div class="wiz-fields">
+          <div id="m_none" class="wiz-muted-note" style="display:none;">Profile is "Not Employed" — no financials needed.</div>
+          <div id="m_income" style="display:none;">
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_gross">Gross Income / Month (₹)</label>
+                <input id="m_gross" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_net">Net Income / Month (₹)</label>
+                <input id="m_net" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_bonus">Annual Bonus (₹/yr)</label>
+                <input id="m_bonus" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_otherIncome">Other Income (₹/mo)</label>
+                <input id="m_otherIncome" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_existingEmi">Existing EMIs (₹/mo)</label>
+                <input id="m_existingEmi" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+          </div>
+          <div id="m_itr" style="display:none;">
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_itr1" id="m_itr1_lbl">ITR (₹/yr)</label>
+                <input id="m_itr1" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_itr2" id="m_itr2_lbl">ITR (₹/yr)</label>
+                <input id="m_itr2" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_itr3" id="m_itr3_lbl">ITR (₹/yr)</label>
+                <input id="m_itr3" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_otherIncome">Other Income (₹/mo)</label>
+                <input id="m_otherIncome" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_existingEmi">Existing EMIs (₹/mo)</label>
+                <input id="m_existingEmi" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+          </div>
+          <div id="m_freelance" style="display:none;">
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_fl1" id="m_fl1_lbl">Income (₹/yr)</label>
+                <input id="m_fl1" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_fl2" id="m_fl2_lbl">Income (₹/yr)</label>
+                <input id="m_fl2" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_fl3" id="m_fl3_lbl">Income (₹/yr)</label>
+                <input id="m_fl3" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+            <div class="wiz-field-row">
+              <div class="wiz-field wiz-field-wide">
+                <label for="m_contract">Ongoing Contract</label>
+                <input id="m_contract" type="text" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_otherIncome">Other Income (₹/mo)</label>
+                <input id="m_otherIncome" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_existingEmi">Existing EMIs (₹/mo)</label>
+                <input id="m_existingEmi" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+          </div>
+          <div id="m_director" style="display:none;">
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_dgross">Gross Salary / Month (₹)</label>
+                <input id="m_dgross" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_dnet">Net Salary / Month (₹)</label>
+                <input id="m_dnet" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_dtotal">Total Income Latest Yr (₹, incl. bonus)</label>
+                <input id="m_dtotal" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_fy1" id="m_fy1_lbl">Revenue (₹ Cr)</label>
+                <input id="m_fy1" type="number" step="0.01" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_fy2" id="m_fy2_lbl">Revenue (₹ Cr)</label>
+                <input id="m_fy2" type="number" step="0.01" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_fy3" id="m_fy3_lbl">Revenue (₹ Cr)</label>
+                <input id="m_fy3" type="number" step="0.01" value="" class="wiz-input">
+              </div>
+            </div>
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_otherIncome">Other Income (₹/mo)</label>
+                <input id="m_otherIncome" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_existingEmi">Existing EMIs (₹/mo)</label>
+                <input id="m_existingEmi" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+          </div>
+          <div id="m_revenue" style="display:none;">
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_fy1" id="m_fy1_lbl">Revenue (₹ Cr)</label>
+                <input id="m_fy1" type="number" step="0.01" value="2.41" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_fy2" id="m_fy2_lbl">Revenue (₹ Cr)</label>
+                <input id="m_fy2" type="number" step="0.01" value="3.62" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_fy3" id="m_fy3_lbl">Revenue (₹ Cr)</label>
+                <input id="m_fy3" type="number" step="0.01" value="1.98" class="wiz-input">
+              </div>
+            </div>
+            <div class="wiz-field-row">
+              <div class="wiz-field">
+                <label for="m_otherIncome">Other Income (₹/mo)</label>
+                <input id="m_otherIncome" type="number" min="0" value="" class="wiz-input">
+              </div>
+              <div class="wiz-field">
+                <label for="m_existingEmi">Existing EMIs (₹/mo)</label>
+                <input id="m_existingEmi" type="number" min="0" value="" class="wiz-input">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6: CO-APPLICANTS -->
+    <div class="wiz-pane" id="wiz-5">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 6 of 8</div>
+          <h2 class="wiz-card-title">Co-Applicants</h2>
+          <p class="wiz-card-sub">Add as many co-applicants as needed. Leave empty to skip.</p>
+        </div>
+        <div class="wiz-fields" id="coAppList">
+          <!-- co-applicant cards injected here -->
+        </div>
+        <div style="padding:0 40px 32px;">
+          <button class="wiz-add-coapplicant" onclick="addCoApplicant()">+ Add Co-Applicant</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 7: NOTES -->
+    <div class="wiz-pane" id="wiz-6">
+      <div class="wiz-card">
+        <div class="wiz-card-header">
+          <div class="wiz-card-eyebrow">Step 7 of 8</div>
+          <h2 class="wiz-card-title">Special Notes</h2>
+          <p class="wiz-card-sub">Add any notes for the lender. Leave blank to hide this section.</p>
+        </div>
+        <div class="wiz-fields">
+          <div class="wiz-field-full">
+            <label for="notes">Note for the lender</label>
+            <textarea id="notes" class="wiz-textarea">Existing sanction in hand from Bank of India (Belapur, Navi Mumbai branch) at 8% ROI.</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 8: PREVIEW -->
+    <div class="wiz-pane" id="wiz-7">
+      <div class="wiz-card">
+        <div class="wiz-card-header" style="background:linear-gradient(135deg, #fff 40%, var(--orange-light));">
+          <div class="wiz-card-eyebrow">Step 8 of 8</div>
+          <h2 class="wiz-card-title">Ready to see your profile? 🎉</h2>
+          <p class="wiz-card-sub">Your fact sheet is ready. Scroll down to preview and download it.</p>
+        </div>
+        <div class="wiz-fields" style="align-items:center;text-align:center;padding:40px;">
+          <div style="font-size:48px;margin-bottom:8px;">📄</div>
+          <p style="font-size:16px;color:var(--grey);margin-bottom:24px;">Everything looks good. Your fact sheet has been generated below.</p>
+          <button class="wiz-btn-next" style="font-size:16px;padding:16px 48px;" onclick="downloadJpg()">Download Fact Sheet</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden legacy co-applicant fields (canvas still reads these) -->
+    <div style="display:none;" aria-hidden="true">
+      <input id="coName" type="text" value="">
+      <input id="coAge" type="number" value="">
+      <input id="coCibil" type="number" value="">
+      <select id="coProfile"><option value="Not Employed">Not Employed</option><option value="Salaried">Salaried</option><option value="Sole Proprietor">Sole Proprietor</option><option value="Freelancer">Freelancer</option><option value="Business Owner - Pvt Ltd">Business Owner - Pvt Ltd</option></select>
+      <input id="propCoOwner" type="number" value="">
+      <input id="coCompany" type="text" value="">
+      <input id="c_vintage" type="text" value="">
+      <input id="coBusiness" type="text" value="">
+      <input id="c_gross" type="number" value="">
+      <input id="c_net" type="number" value="">
+      <input id="c_bonus" type="number" value="">
+      <input id="c_itr1" type="number" value=""><input id="c_itr2" type="number" value=""><input id="c_itr3" type="number" value="">
+      <input id="c_fl1" type="number" value=""><input id="c_fl2" type="number" value=""><input id="c_fl3" type="number" value="">
+      <input id="c_contract" type="text" value="">
+      <input id="c_dgross" type="number" value=""><input id="c_dnet" type="number" value=""><input id="c_dtotal" type="number" value="">
+      <input id="c_fy1" type="number" value=""><input id="c_fy2" type="number" value=""><input id="c_fy3" type="number" value="">
+      <input id="c_otherIncome" type="number" value="">
+      <input id="c_existingEmi" type="number" value="">
+      <div id="c_hidden"></div><div id="c_none"></div><div id="c_emiShared"></div>
+      <div id="c_income"></div><div id="c_itr"></div><div id="c_freelance"></div><div id="c_director"></div><div id="c_revenue"></div>
+      <div id="coEmploymentFields"></div><div id="coBusinessField"></div>
+    </div>
+
+    <!-- WIZARD NAVIGATION -->
+    <div class="wiz-nav">
+      <button class="wiz-btn-back" id="wizBack" onclick="wizGo(-1)" style="visibility:hidden;">← Back</button>
+      <div class="wiz-nav-center"></div>
+      <button class="wiz-btn-next" id="wizNext" onclick="wizGo(1)">Next →</button>
+    </div>
+
+
+  </div>
+
+  <!-- ============ PREVIEW ============ -->
+  <div class="preview-panel" id="previewSection" style="display:none;">
+    <div class="preview-label">Fact Sheet</div>
+    <div class="preview-frame">
+      <canvas id="sheet" width="1241" height="1754" aria-label="Fact sheet preview"></canvas>
+    </div>
+  </div>
+</div>
+</div><!-- end tab-fact-sheet -->
+
+<div id="tab-offer-gen" class="tab-pane">
+  <div class="offer-wrap">
+    <div class="panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <h2>Offer Generator</h2>
+        <div style="display:flex;gap:10px;">
+          <button class="secondary" id="og_refresh" onclick="syncAndGenerate()">↻ Refresh from Fact Sheet</button>
+          <button class="secondary" id="og_dlJpg" style="display:none;">Download JPG</button>
+        </div>
+      </div>
+
+      <!-- Live comparison table -->
+      <div id="og_table_wrap">
+        <p class="hint" style="margin-bottom:0;">Switch to the Fact Sheet tab, fill in the details, then come back here.</p>
+      </div>
+    </div>
+  </div>
+</div><!-- end tab-offer-gen -->
+
+<script>
+const C = {
+  ink: '#1A1A1A',
+  ink2: '#5B5B5B',
+  muted: '#8C8C8C',
+  orange: '#FF6F38',
+  orangeDeep: '#E0562A',
+  orangeSoft: '#FFF4EF',
+  line: '#E7E3E0',
+  lineSoft: '#F2EEEB',
+  white: '#FFFFFF',
+};
+
+const SCALE = 2;
+const PAGE_W = 1241;
+const MARGIN = 80;
+
+const $ = id => document.getElementById(id);
+const canvas = $('sheet');
+const ctx = canvas.getContext('2d');
+
+function font(px, weight = 400) {
+  return `${weight} ${px * SCALE}px 'Poppins', 'Segoe UI', Arial, sans-serif`;
+}
+function setLS(px) { try { ctx.letterSpacing = (px * SCALE) + 'px'; } catch (e) {} }
+
+function rr(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath();
+}
+
+function wrapText(text, maxWidth, fnt) {
+  ctx.font = fnt;
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = '';
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line); line = w;
+    } else line = test;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+function fmtCr(v) {
+  const n = parseFloat(v);
+  if (isNaN(n)) return '—';
+  return '₹ ' + n.toFixed(2) + ' Cr';
+}
+function fmtINR(n) {
+  if (isNaN(n) || n === null) return '—';
+  n = Math.round(n);
+  const s = n.toString();
+  if (s.length <= 3) return '₹ ' + s;
+  const last3 = s.slice(-3);
+  let rest = s.slice(0, -3);
+  rest = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+  return '₹ ' + rest + ',' + last3;
+}
+function fmtINRCr(n) {
+  if (isNaN(n)) return '—';
+  if (n >= 1e7) return '₹ ' + (n / 1e7).toFixed(2) + ' Cr';
+  if (n >= 1e5) return '₹ ' + (n / 1e5).toFixed(2) + ' L';
+  return fmtINR(n);
+}
+function getLTV() {
+  const loan = parseFloat($('loan').value);
+  const av = parseFloat($('av').value);
+  if (!loan || !av) return '—';
+  return ((loan / av) * 100).toFixed(1) + '%';
+}
+function finModeOf(profile) {
+  if (profile === 'Salaried') return 'income';
+  if (profile === 'Freelancer') return 'freelance';
+  if (profile === 'Business Owner - Pvt Ltd') return 'director';
+  if (profile === 'Sole Proprietor') return 'revenue';
+  return 'none';
+}
+function stdLabels() {
+  const now = new Date();
+  const fyEndYear = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
+  const fy = i => 'FY ' + (fyEndYear - 1 - i) + '\u2013' + String(fyEndYear - i).slice(2);
+  const ay = i => 'AY ' + (fyEndYear - i) + '\u2013' + String(fyEndYear + 1 - i).slice(2);
+  return { fy: [fy(2), fy(1), fy(0)], ay: [ay(2), ay(1), ay(0)] };
+}
+const LBL = stdLabels();
+
+function updateFormVisibility() {
+  ['m', 'c'].forEach(p => {
+    for (let i = 1; i <= 3; i++) {
+      const fyl = $(p + '_fy' + i + '_lbl');
+      if (fyl) fyl.textContent = 'Revenue ' + LBL.fy[i - 1] + ' (\u20B9 Cr)';
+      const itl = $(p + '_itr' + i + '_lbl');
+      if (itl) itl.textContent = 'ITR ' + LBL.ay[i - 1] + ' (\u20B9/yr)';
+      const fll = $(p + '_fl' + i + '_lbl');
+      if (fll) fll.textContent = 'Income ' + LBL.fy[i - 1] + ' (\u20B9/yr)';
+    }
+  });
+  const mProfile = $('profile').value;
+  const cProfile = $('coProfile').value;
+  $('businessField').style.display = (mProfile === 'Salaried' || mProfile === 'Not Employed') ? 'none' : '';
+  $('gstField').style.display = (mProfile === 'Sole Proprietor' || mProfile === 'Business Owner - Pvt Ltd') ? '' : 'none';
+  $('coEmploymentFields').style.display = (cProfile === 'Not Employed') ? 'none' : '';
+  $('coBusinessField').style.display = (cProfile === 'Salaried' || cProfile === 'Not Employed') ? 'none' : '';
+  const mMode = finModeOf(mProfile);
+  ['income', 'itr', 'revenue', 'freelance', 'director'].forEach(m => { $('m_' + m).style.display = mMode === m ? '' : 'none'; });
+  $('m_none').style.display = mMode === 'none' ? '' : 'none';
+  const hasCo = $('coName').value.trim() !== '';
+  const cMode = finModeOf(cProfile);
+  $('c_hidden').style.display = hasCo ? 'none' : '';
+  $('c_none').style.display = (hasCo && cMode === 'none') ? '' : 'none';
+  $('c_emiShared').style.display = hasCo ? '' : 'none';
+  ['income', 'itr', 'revenue', 'freelance', 'director'].forEach(m => { $('c_' + m).style.display = (hasCo && cMode === m) ? '' : 'none'; });
+}
+
+// ---------- Drawing primitives ----------
+function capLabel(text, x, y, color) {
+  ctx.fillStyle = color || C.muted;
+  ctx.font = font(10.5, 700);
+  setLS(1.2);
+  ctx.fillText(text.toUpperCase(), x * SCALE, y * SCALE);
+  setLS(0);
+}
+
+function sectionHeading(text, y, width, x = MARGIN) {
+  ctx.fillStyle = C.orange;
+  rr(ctx, x * SCALE, (y - 12) * SCALE, 4 * SCALE, 16 * SCALE, 2 * SCALE);
+  ctx.fill();
+  const tx = x + 15;
+  ctx.fillStyle = C.ink;
+  ctx.font = font(13, 700);
+  setLS(1);
+  const t = text.toUpperCase();
+  ctx.fillText(t, tx * SCALE, y * SCALE);
+  const tw = ctx.measureText(t).width;
+  setLS(0);
+  ctx.strokeStyle = C.line;
+  ctx.lineWidth = 1 * SCALE;
+  ctx.beginPath();
+  ctx.moveTo(tx * SCALE + tw + 16 * SCALE, (y - 5) * SCALE);
+  ctx.lineTo((x + width) * SCALE, (y - 5) * SCALE);
+  ctx.stroke();
+  return y + 26;
+}
+
+function detailRow(label, value, y, width, x = MARGIN) {
+  capLabel(label, x, y + 11);
+  ctx.fillStyle = C.ink;
+  ctx.font = font(15, 600);
+  const lines = wrapText(value, width * SCALE, font(15, 600));
+  let yy = y + 35;
+  for (const ln of lines) { ctx.fillText(ln, x * SCALE, yy * SCALE); yy += 23; }
+  const bottom = Math.max(y + 48, yy + 3);
+  ctx.strokeStyle = C.lineSoft;
+  ctx.lineWidth = 1 * SCALE;
+  ctx.beginPath();
+  ctx.moveTo(x * SCALE, bottom * SCALE);
+  ctx.lineTo((x + width) * SCALE, bottom * SCALE);
+  ctx.stroke();
+  return bottom + 16;
+}
+
+function finRow(label, value, y, width, x = MARGIN) {
+  ctx.fillStyle = C.ink2;
+  ctx.font = font(14, 500);
+  setLS(0);
+  ctx.fillText(label, x * SCALE, (y + 18) * SCALE);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = C.ink;
+  ctx.font = font(15.5, 700);
+  ctx.fillText(value, (x + width) * SCALE, (y + 18) * SCALE);
+  ctx.textAlign = 'left';
+  const bottom = y + 34;
+  ctx.strokeStyle = C.lineSoft;
+  ctx.lineWidth = 1 * SCALE;
+  ctx.beginPath();
+  ctx.moveTo(x * SCALE, bottom * SCALE);
+  ctx.lineTo((x + width) * SCALE, bottom * SCALE);
+  ctx.stroke();
+  return bottom + 14;
+}
+
+function drawFinancials(heading, prefix, mode, y, width, x = MARGIN) {
+  if (mode === 'none') return y;
+  y = sectionHeading(heading, y, width, x);
+  if (mode === 'income') {
+    const gross = parseFloat($(prefix + '_gross').value);
+    const net = parseFloat($(prefix + '_net').value);
+    const bonus = parseFloat($(prefix + '_bonus').value);
+    y = finRow('Gross Income / Month', isNaN(gross) ? '—' : fmtINR(gross), y, width, x);
+    y = finRow('Net Income / Month', isNaN(net) ? '—' : fmtINR(net), y, width, x);
+    if (!isNaN(bonus) && bonus > 0) y = finRow('Annual Bonus', fmtINRCr(bonus), y, width, x);
+  } else if (mode === 'itr') {
+    const v = i => { const n = parseFloat($(prefix + '_itr' + i).value); return isNaN(n) ? '—' : fmtINRCr(n); };
+    y = finRow('ITR ' + LBL.ay[0], v(1), y, width, x);
+    y = finRow('ITR ' + LBL.ay[1], v(2), y, width, x);
+    y = finRow('ITR ' + LBL.ay[2], v(3), y, width, x);
+  } else if (mode === 'revenue') {
+    y = finRow('Revenue ' + LBL.fy[0], fmtCr($(prefix + '_fy1').value), y, width, x);
+    y = finRow('Revenue ' + LBL.fy[1], fmtCr($(prefix + '_fy2').value), y, width, x);
+    y = finRow('Revenue ' + LBL.fy[2], fmtCr($(prefix + '_fy3').value), y, width, x);
+  } else if (mode === 'freelance') {
+    const v = i => { const n = parseFloat($(prefix + '_fl' + i).value); return isNaN(n) ? '—' : fmtINRCr(n); };
+    y = finRow('Income ' + LBL.fy[0], v(1), y, width, x);
+    y = finRow('Income ' + LBL.fy[1], v(2), y, width, x);
+    y = finRow('Income ' + LBL.fy[2], v(3), y, width, x);
+    const contract = $(prefix + '_contract').value.trim();
+    if (contract) y = finRow('Ongoing Contract', contract, y, width, x);
+  } else if (mode === 'director') {
+    const gross = parseFloat($(prefix + '_dgross').value);
+    const net = parseFloat($(prefix + '_dnet').value);
+    const total = parseFloat($(prefix + '_dtotal').value);
+    y = finRow('Gross Salary / Month', isNaN(gross) ? '—' : fmtINR(gross), y, width, x);
+    y = finRow('Net Salary / Month', isNaN(net) ? '—' : fmtINR(net), y, width, x);
+    y = finRow('Total Income (Latest Yr, incl. bonus)', isNaN(total) ? '—' : fmtINRCr(total), y, width, x);
+  }
+  const otherInc = parseFloat($(prefix + '_otherIncome').value) || 0;
+  const emi = parseFloat($(prefix + '_existingEmi').value) || 0;
+  if (otherInc > 0) y = finRow('Other Income', fmtINR(otherInc) + ' /mo', y, width, x);
+  if (emi > 0) y = finRow('Existing EMIs', fmtINR(emi) + ' /mo', y, width, x);
+  return y + 20;
+}
+
+function draw() {
+  updateFormVisibility();
+
+  const name = $('name').value.trim() || 'Client Name';
+  const age = $('age').value ? $('age').value + ' years' : '—';
+  const cibil = $('cibil').value || '—';
+  const profile = $('profile').value;
+  const company = $('company').value.trim();
+  const business = $('business').value.trim();
+  const loanStr = fmtCr($('loan').value);
+  const avStr = fmtCr($('av').value);
+  const ltv = getLTV();
+  const notes = $('notes').value.trim();
+  const coName = $('coName').value.trim();
+  const coAge = $('coAge').value.trim();
+  const coProfile = $('coProfile').value;
+  const coCibil = $('coCibil').value || '—';
+  const coCompany = $('coCompany').value.trim();
+  const coBusiness = $('coBusiness').value.trim();
+  const mVintage = $('m_vintage').value.trim();
+  const cVintage = $('c_vintage').value.trim();
+  const propOwner = $('propOwner').value;
+  const propCoOwner = $('propCoOwner').value;
+  const flatWing = $('flatWing').value.trim();
+  const society = $('society').value.trim();
+  const area = $('area').value.trim();
+  const parking = $('parking').value.trim();
+  const mShowBiz = profile !== 'Salaried' && profile !== 'Not Employed';
+  const cShowBiz = coProfile !== 'Salaried' && coProfile !== 'Not Employed';
+  const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  $('ltvOut').textContent = ltv;
+
+  const contentW = PAGE_W - 2 * MARGIN;
+
+  canvas.width = PAGE_W * SCALE;
+  canvas.height = 2600 * SCALE;
+  ctx.fillStyle = C.white;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'left';
+
+  // ---------- Top accent + header ----------
+  ctx.fillStyle = C.orange;
+  ctx.fillRect(0, 0, canvas.width, 8 * SCALE);
+
+  ctx.font = font(22, 700);
+  setLS(0.5);
+  ctx.fillStyle = C.orange;
+  ctx.fillText('TRUVA ', MARGIN * SCALE, 76 * SCALE);
+  const w1 = ctx.measureText('TRUVA ').width;
+  ctx.fillStyle = C.ink;
+  ctx.fillText('HOME LOANS', MARGIN * SCALE + w1, 76 * SCALE);
+  setLS(0);
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = C.muted;
+  ctx.font = font(11, 700);
+  setLS(2);
+  ctx.fillText('CUSTOMER FACT SHEET', (PAGE_W - MARGIN) * SCALE, 60 * SCALE);
+  setLS(0);
+  ctx.fillStyle = C.ink2;
+  ctx.font = font(13, 500);
+  ctx.fillText(today, (PAGE_W - MARGIN) * SCALE, 82 * SCALE);
+  ctx.textAlign = 'left';
+
+  // Client name
+  let y = 156;
+  ctx.fillStyle = C.ink;
+  ctx.font = font(40, 700);
+  setLS(0);
+  ctx.fillText(name, MARGIN * SCALE, y * SCALE);
+  y += 22;
+  ctx.strokeStyle = C.line;
+  ctx.lineWidth = 1 * SCALE;
+  ctx.beginPath();
+  ctx.moveTo(MARGIN * SCALE, y * SCALE);
+  ctx.lineTo((PAGE_W - MARGIN) * SCALE, y * SCALE);
+  ctx.stroke();
+  y += 34;
+
+  // ---------- Hero cards: Loan + LTV ----------
+  {
+    y = sectionHeading('Loan Requirements', y, contentW);
+    const cardH = 76;
+    const gap = 20;
+    const boxW = (contentW - gap) / 2;
+
+    const drawKpi = (bx, label, value, valueColor, sideLabel, sideValue) => {
+      rr(ctx, bx * SCALE, y * SCALE, boxW * SCALE, cardH * SCALE, 10 * SCALE);
+      ctx.fillStyle = C.orangeSoft;
+      ctx.fill();
+      ctx.fillStyle = C.orange;
+      rr(ctx, bx * SCALE, y * SCALE, 3 * SCALE, cardH * SCALE, 1.5 * SCALE);
+      ctx.fill();
+
+      const px = bx + 28;
+      const innerW = boxW - 28 - 24;
+      ctx.fillStyle = C.orangeDeep;
+      ctx.font = font(12.5, 600);
+      setLS(1.3);
+      let lpx = 12.5;
+      while (ctx.measureText(label).width > innerW * SCALE && lpx > 9) {
+        lpx -= 0.5; ctx.font = font(lpx, 600);
+      }
+      ctx.fillText(label, px * SCALE, (y + 27) * SCALE);
+      setLS(0);
+
+      ctx.fillStyle = valueColor;
+      ctx.font = font(25, 600);
+      ctx.fillText(value, px * SCALE, (y + 58) * SCALE);
+
+      if (sideLabel) {
+        const rx = bx + boxW - 26;
+        ctx.textAlign = 'right';
+        ctx.fillStyle = C.orangeDeep;
+        ctx.font = font(lpx, 600);
+        setLS(1.3);
+        ctx.fillText(sideLabel.toUpperCase(), rx * SCALE, (y + 27) * SCALE);
+        setLS(0);
+        ctx.fillStyle = C.ink;
+        ctx.font = font(25, 600);
+        ctx.fillText(sideValue, rx * SCALE, (y + 58) * SCALE);
+        ctx.textAlign = 'left';
+      }
+    };
+
+    drawKpi(MARGIN, 'LOAN REQUIRED', loanStr, C.ink, 'Agreement Value', avStr);
+    drawKpi(MARGIN + boxW + gap, 'LTV (LOAN TO AGREEMENT RATIO)', ltv, C.ink, '', '');
+
+    y += cardH + 32;
+  }
+
+  // ---------- Property strip (horizontal) ----------
+  {
+    const propItems = [];
+    if (flatWing) propItems.push(['Flat / Wing', flatWing]);
+    if (society) propItems.push(['Society', society]);
+    if (area) propItems.push(['Carpet Area', area]);
+    if (parking) propItems.push(['Parking', parking]);
+
+    if (propItems.length > 0) {
+      y = sectionHeading('Property', y, contentW);
+      const gap = 16;
+      const n = propItems.length;
+      const boxW = (contentW - gap * (n - 1)) / n;
+      const boxH = 62;
+      propItems.forEach((it, i) => {
+        const bx = MARGIN + i * (boxW + gap);
+        rr(ctx, bx * SCALE, y * SCALE, boxW * SCALE, boxH * SCALE, 10 * SCALE);
+        ctx.fillStyle = '#FBFAF9';
+        ctx.fill();
+        ctx.strokeStyle = C.line;
+        ctx.lineWidth = 1 * SCALE;
+        rr(ctx, bx * SCALE, y * SCALE, boxW * SCALE, boxH * SCALE, 10 * SCALE);
+        ctx.stroke();
+
+        const px = bx + 20;
+        const innerW = (boxW - 40) * SCALE;
+        capLabel(it[0], px, y + 22, C.muted);
+
+        ctx.fillStyle = C.ink;
+        setLS(0);
+        let vpx = 15;
+        ctx.font = font(vpx, 600);
+        const lines = wrapText(String(it[1]), innerW, font(vpx, 600));
+        if (lines.length > 2) {
+          vpx = 12.5;
+          ctx.font = font(vpx, 600);
+        }
+        const shown = wrapText(String(it[1]), innerW, font(vpx, 600)).slice(0, 2);
+        const lineH = vpx + 4;
+        let ly = y + (shown.length === 1 ? 44 : 40);
+        for (const ln of shown) {
+          ctx.fillText(ln, px * SCALE, ly * SCALE);
+          ly += lineH;
+        }
+      });
+      y += boxH + 34;
+    }
+  }
+
+  // ---------- Employment + Financials ----------
+  {
+    const colGap = 48;
+    const colW = (contentW - colGap) / 2;
+
+    let leftY = sectionHeading('Employment', y, colW);
+    if (company) leftY = detailRow('Company & Duration', mVintage ? `${company}  ·  ${mVintage}` : company, leftY, colW);
+    if (mShowBiz && business) leftY = detailRow('Nature of Business', business, leftY, colW);
+    leftY = drawFinancials('Financials — Main Applicant', 'm', finModeOf(profile), leftY + 12, colW, MARGIN);
+
+    const rightX = MARGIN + colW + colGap;
+    let rightY = sectionHeading('Background', y, colW, rightX);
+    rightY = finRow('Age', age, rightY, colW, rightX);
+    rightY = finRow('CIBIL Score', String(cibil), rightY, colW, rightX);
+    rightY = finRow('Work Profile', profile, rightY, colW, rightX);
+    if (propOwner) rightY = finRow('Properties Owned', propOwner, rightY, colW, rightX);
+
+    y = Math.max(leftY, rightY) + 28;
+  }
+
+  // ---------- Co-Applicant blocks (all dynamic cards) ----------
+  const coCards = document.querySelectorAll('.co-card');
+  coCards.forEach((card, cardIndex) => {
+    const idx = parseInt(card.id.replace('co-card-', ''));
+    const coNameVal   = getCoVal(idx, 'name').trim();
+    if (!coNameVal) return;
+
+    const coAgeVal    = getCoVal(idx, 'age').trim();
+    const coCibilVal  = getCoVal(idx, 'cibil').trim();
+    const coProf      = getCoVal(idx, 'profile') || 'Not Employed';
+    const coComp      = getCoVal(idx, 'company').trim();
+    const coVint      = getCoVal(idx, 'vintage').trim();
+    const coBiz       = getCoVal(idx, 'business').trim();
+    const coShowBiz   = coProf !== 'Salaried' && coProf !== 'Not Employed';
+
+    // Divider
+    ctx.strokeStyle = C.line;
+    ctx.lineWidth = 1 * SCALE;
+    ctx.beginPath();
+    ctx.moveTo(MARGIN * SCALE, y * SCALE);
+    ctx.lineTo((PAGE_W - MARGIN) * SCALE, y * SCALE);
+    ctx.stroke();
+    y += 36;
+
+    // Section title
+    y = sectionHeading(cardIndex === 0 ? 'Co-Applicant' : `Co-Applicant ${cardIndex + 1}`, y, contentW);
+    y += 16;
+
+    // Name
+    ctx.fillStyle = C.ink;
+    ctx.font = font(26, 700);
+    setLS(0);
+    ctx.fillText(coNameVal, MARGIN * SCALE, y * SCALE);
+    y += 38;
+
+    const colGap = 48;
+    const colW = (contentW - colGap) / 2;
+
+    if (coProf === 'Not Employed') {
+      let bgY = y;
+      bgY = sectionHeading('Background', bgY, colW);
+      bgY = finRow('Age', coAgeVal ? coAgeVal + ' years' : '—', bgY, colW, MARGIN);
+      bgY = finRow('CIBIL Score', coCibilVal || '—', bgY, colW, MARGIN);
+      bgY = finRow('Work Profile', coProf, bgY, colW, MARGIN);
+      const coPropVal = getCoVal(idx, 'propCoOwner');
+      if (coPropVal) bgY = finRow('Properties Owned', coPropVal, bgY, colW, MARGIN);
+      y = bgY + 28;
+    } else {
+      let coLeftY = y;
+      if (coComp) {
+        coLeftY = sectionHeading('Employment', coLeftY, colW);
+        coLeftY = detailRow('Company & Duration', coVint ? `${coComp}  ·  ${coVint}` : coComp, coLeftY, colW);
+        if (coShowBiz && coBiz) coLeftY = detailRow('Nature of Business', coBiz, coLeftY, colW);
+        coLeftY += 12;
+      }
+
+      const coGross   = parseFloat(getCoVal(idx, 'gross'))  || 0;
+      const coNet     = parseFloat(getCoVal(idx, 'net'))    || 0;
+      const coBonus   = parseFloat(getCoVal(idx, 'bonus'))  || 0;
+      const coItr1    = parseFloat(getCoVal(idx, 'itr1'))   || 0;
+      const coItr2    = parseFloat(getCoVal(idx, 'itr2'))   || 0;
+      const coItr3    = parseFloat(getCoVal(idx, 'itr3'))   || 0;
+      const coFy1     = parseFloat(getCoVal(idx, 'fy1'))    || 0;
+      const coFy2     = parseFloat(getCoVal(idx, 'fy2'))    || 0;
+      const coFy3     = parseFloat(getCoVal(idx, 'fy3'))    || 0;
+      const coFl1     = parseFloat(getCoVal(idx, 'fl1'))    || 0;
+      const coFl2     = parseFloat(getCoVal(idx, 'fl2'))    || 0;
+      const coFl3     = parseFloat(getCoVal(idx, 'fl3'))    || 0;
+      const coOther   = parseFloat(getCoVal(idx, 'otherIncome')) || 0;
+      const coEmi     = parseFloat(getCoVal(idx, 'existingEmi'))  || 0;
+      const coDgross  = parseFloat(getCoVal(idx, 'dgross')) || 0;
+      const coDnet    = parseFloat(getCoVal(idx, 'dnet'))   || 0;
+      const coDtotal  = parseFloat(getCoVal(idx, 'dtotal')) || 0;
+      const coContract = getCoVal(idx, 'contract') || '';
+
+      const finMode = finModeOf(coProf);
+      if (finMode !== 'none') {
+        coLeftY = sectionHeading('Financials', coLeftY, colW);
+        if (finMode === 'income') {
+          if (coGross)  coLeftY = finRow('Gross Income / Month', fmtINR(coGross), coLeftY, colW, MARGIN);
+          if (coNet)    coLeftY = finRow('Net Income / Month', fmtINR(coNet), coLeftY, colW, MARGIN);
+          if (coBonus)  coLeftY = finRow('Annual Bonus', fmtINRCr(coBonus), coLeftY, colW, MARGIN);
+        } else if (finMode === 'itr') {
+          if (coItr1)   coLeftY = finRow('ITR ' + LBL.ay[0], fmtINRCr(coItr1), coLeftY, colW, MARGIN);
+          if (coItr2)   coLeftY = finRow('ITR ' + LBL.ay[1], fmtINRCr(coItr2), coLeftY, colW, MARGIN);
+          if (coItr3)   coLeftY = finRow('ITR ' + LBL.ay[2], fmtINRCr(coItr3), coLeftY, colW, MARGIN);
+        } else if (finMode === 'revenue') {
+          if (coFy1)    coLeftY = finRow('Revenue ' + LBL.fy[0], fmtINRCr(coFy1 * 1e7), coLeftY, colW, MARGIN);
+          if (coFy2)    coLeftY = finRow('Revenue ' + LBL.fy[1], fmtINRCr(coFy2 * 1e7), coLeftY, colW, MARGIN);
+          if (coFy3)    coLeftY = finRow('Revenue ' + LBL.fy[2], fmtINRCr(coFy3 * 1e7), coLeftY, colW, MARGIN);
+        } else if (finMode === 'freelance') {
+          if (coFl1)    coLeftY = finRow('Income ' + LBL.ay[0], fmtINRCr(coFl1), coLeftY, colW, MARGIN);
+          if (coFl2)    coLeftY = finRow('Income ' + LBL.ay[1], fmtINRCr(coFl2), coLeftY, colW, MARGIN);
+          if (coFl3)    coLeftY = finRow('Income ' + LBL.ay[2], fmtINRCr(coFl3), coLeftY, colW, MARGIN);
+          if (coContract) coLeftY = detailRow('Ongoing Contract', coContract, coLeftY, colW);
+        } else if (finMode === 'director') {
+          if (coDgross) coLeftY = finRow('Gross Salary / Month', fmtINR(coDgross), coLeftY, colW, MARGIN);
+          if (coDnet)   coLeftY = finRow('Net Salary / Month', fmtINR(coDnet), coLeftY, colW, MARGIN);
+          if (coDtotal) coLeftY = finRow('Total Income Latest Yr', fmtINRCr(coDtotal), coLeftY, colW, MARGIN);
+        }
+        if (coOther) coLeftY = finRow('Other Income', fmtINR(coOther) + ' /mo', coLeftY, colW, MARGIN);
+        if (coEmi)   coLeftY = finRow('Existing EMIs', fmtINR(coEmi) + ' /mo', coLeftY, colW, MARGIN);
+      }
+
+      const coRightX = MARGIN + colW + colGap;
+      let coRightY = sectionHeading('Background', y, colW, coRightX);
+      coRightY = finRow('Age', coAgeVal ? coAgeVal + ' years' : '—', coRightY, colW, coRightX);
+      coRightY = finRow('CIBIL Score', coCibilVal || '—', coRightY, colW, coRightX);
+      coRightY = finRow('Work Profile', coProf, coRightY, colW, coRightX);
+      const coPropValE = getCoVal(idx, 'propCoOwner');
+      if (coPropValE) coRightY = finRow('Properties Owned', coPropValE, coRightY, colW, coRightX);
+
+      y = Math.max(coLeftY, coRightY) + 28;
+    }
+  });
+
+  // ---------- Special notes ----------
+  if (notes) {
+    y = sectionHeading('Special Notes', y, contentW);
+    const nf = font(15, 500);
+    const lines = wrapText(notes, (contentW - 72) * SCALE, nf);
+    const boxH = lines.length * 24 + 34;
+    rr(ctx, MARGIN * SCALE, y * SCALE, contentW * SCALE, boxH * SCALE, 12 * SCALE);
+    ctx.fillStyle = C.orangeSoft;
+    ctx.fill();
+    ctx.fillStyle = C.orange;
+    rr(ctx, MARGIN * SCALE, y * SCALE, 5 * SCALE, boxH * SCALE, 2.5 * SCALE);
+    ctx.fill();
+    ctx.fillStyle = C.ink;
+    ctx.font = nf;
+    let ny = y + 34;
+    for (const ln of lines) { ctx.fillText(ln, (MARGIN + 34) * SCALE, ny * SCALE); ny += 24; }
+    y += boxH + 30;
+  }
+
+  // ---------- Footer ----------
+  y += 4;
+  ctx.strokeStyle = C.line;
+  ctx.lineWidth = 1 * SCALE;
+  ctx.beginPath();
+  ctx.moveTo(MARGIN * SCALE, y * SCALE);
+  ctx.lineTo((PAGE_W - MARGIN) * SCALE, y * SCALE);
+  ctx.stroke();
+  y += 28;
+  ctx.fillStyle = C.muted;
+  ctx.font = font(11.5, 600);
+  setLS(0.4);
+  ctx.fillText('Prepared by Truva Home Loans  \u00B7  ' + today, MARGIN * SCALE, y * SCALE);
+  setLS(0);
+  y += 30;
+
+  // Crop
+  const finalH = Math.min((y + 8) * SCALE, 2600 * SCALE);
+  const img = ctx.getImageData(0, 0, canvas.width, finalH);
+  canvas.height = finalH;
+  ctx.putImageData(img, 0, 0);
+}
+
+function downloadJpg() {
+  draw();
+  const a = document.createElement('a');
+  const safeName = ($('name').value || 'Client').replace(/[^a-z0-9]+/gi, '_');
+  a.download = safeName + '_Fact_Sheet.jpg';
+  const out = document.createElement('canvas');
+  out.width = canvas.width; out.height = canvas.height;
+  const octx = out.getContext('2d');
+  octx.fillStyle = '#fff';
+  octx.fillRect(0, 0, out.width, out.height);
+  octx.drawImage(canvas, 0, 0);
+  a.href = out.toDataURL('image/jpeg', 0.92);
+  a.click();
+}
+
+function downloadDp() {
+  draw();
+  const size = 1080;
+  const out = document.createElement('canvas');
+  out.width = size; out.height = size;
+  const octx = out.getContext('2d');
+  octx.fillStyle = '#fff';
+  octx.fillRect(0, 0, size, size);
+  const maxDim = size * 0.88;
+  const scale = Math.min(maxDim / canvas.width, maxDim / canvas.height);
+  const w = canvas.width * scale, h = canvas.height * scale;
+  octx.drawImage(canvas, (size - w) / 2, (size - h) / 2, w, h);
+  const a = document.createElement('a');
+  const safeName = ($('name').value || 'Client').replace(/[^a-z0-9]+/gi, '_');
+  a.download = safeName + '_DP.jpg';
+  a.href = out.toDataURL('image/jpeg', 0.92);
+  a.click();
+}
+
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', draw);
+  el.addEventListener('change', draw);
+});
+// dlJpg / dlDp wired via onclick="downloadJpg()" on the preview step button
+
+
+// ============================================================
+// CO-APPLICANT DYNAMIC CARDS
+// ============================================================
+let coCount = 0;
+
+function addCoApplicant() {
+  coCount++;
+  const idx = coCount;
+  const list = document.getElementById('coAppList');
+
+  const card = document.createElement('div');
+  card.className = 'co-card';
+  card.id = 'co-card-' + idx;
+  card.innerHTML = `
+    <div class="co-card-header">
+      <span class="co-card-title">Co-Applicant ${idx}</span>
+      <button class="co-remove" onclick="removeCoApplicant(${idx})" title="Remove">×</button>
+    </div>
+    <div class="co-card-tabs">
+      <button class="co-card-tab active" onclick="coTab(${idx},0,this)">Profile</button>
+      <button class="co-card-tab" onclick="coTab(${idx},1,this)">Employment & Financials</button>
+    </div>
+    <div class="co-card-tab-pane active" id="co-tab-${idx}-0">
+      <div class="co-field-row">
+        <div class="co-field co-field-wide">
+          <label>Full Name</label>
+          <input type="text" class="co-input" data-co="${idx}" data-field="name" oninput="syncCoApplicant()">
+        </div>
+        <div class="co-field">
+          <label>Age</label>
+          <input type="number" class="co-input" data-co="${idx}" data-field="age" oninput="syncCoApplicant()">
+        </div>
+        <div class="co-field">
+          <label>CIBIL Score</label>
+          <input type="number" class="co-input" data-co="${idx}" data-field="cibil" oninput="syncCoApplicant()">
+        </div>
+      </div>
+      <div class="co-field-row">
+        <div class="co-field">
+          <label>Work Profile</label>
+          <select class="co-input" data-co="${idx}" data-field="profile" onchange="syncCoApplicant();updateCoFinancials(${idx})">
+            <option value="Not Employed">Not Employed</option>
+            <option value="Salaried">Salaried</option>
+            <option value="Sole Proprietor">Sole Proprietor</option>
+            <option value="Freelancer">Freelancer</option>
+            <option value="Business Owner - Pvt Ltd">Business Owner - Pvt Ltd</option>
+          </select>
+        </div>
+        <div class="co-field">
+          <label>Residential Properties Owned</label>
+          <select class="co-input" data-co="${idx}" data-field="propCoOwner" onchange="syncCoApplicant()">
+            <option value="">—</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3 or more">3 or more</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="co-card-tab-pane" id="co-tab-${idx}-1">
+      <div class="co-field-row" id="co-emp-${idx}">
+        <div class="co-field co-field-wide">
+          <label>Company Name</label>
+          <input type="text" class="co-input" data-co="${idx}" data-field="company" oninput="syncCoApplicant()">
+        </div>
+        <div class="co-field">
+          <label>Years at Company</label>
+          <input type="text" class="co-input" data-co="${idx}" data-field="vintage" oninput="syncCoApplicant()">
+        </div>
+        <div class="co-field" id="co-biz-${idx}">
+          <label>Nature of Business</label>
+          <input type="text" class="co-input" data-co="${idx}" data-field="business" oninput="syncCoApplicant()">
+        </div>
+      </div>
+      <div id="co-fin-${idx}">
+        <!-- financials injected by updateCoFinancials -->
+      </div>
+      <div class="co-field-row" style="margin-top:10px;">
+        <div class="co-field">
+          <label>Other Income (₹/mo)</label>
+          <input type="number" class="co-input" data-co="${idx}" data-field="otherIncome" oninput="syncCoApplicant()">
+        </div>
+        <div class="co-field">
+          <label>Existing EMIs (₹/mo)</label>
+          <input type="number" class="co-input" data-co="${idx}" data-field="existingEmi" oninput="syncCoApplicant()">
+        </div>
+      </div>
+    </div>
+  `;
+  list.appendChild(card);
+  updateCoFinancials(idx);
+  syncCoApplicant();
+}
+
+function coTab(idx, tab, btn) {
+  btn.closest('.co-card').querySelectorAll('.co-card-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  btn.closest('.co-card').querySelectorAll('.co-card-tab-pane').forEach((p,i) => p.classList.toggle('active', i === tab));
+}
+
+function updateCoFinancials(idx) {
+  const profileEl = document.querySelector(`[data-co="${idx}"][data-field="profile"]`);
+  const profile = profileEl ? profileEl.value : 'Not Employed';
+  const fin = document.getElementById('co-fin-' + idx);
+  const emp = document.getElementById('co-emp-' + idx);
+  const biz = document.getElementById('co-biz-' + idx);
+  if (!fin) return;
+  if (emp) emp.style.display = profile === 'Not Employed' ? 'none' : '';
+  if (biz) biz.style.display = (profile === 'Salaried' || profile === 'Not Employed') ? 'none' : '';
+
+  let finHtml = '';
+  if (profile === 'Salaried') {
+    finHtml = `<div class="co-field-row">
+      <div class="co-field"><label>Gross Income / Month (₹)</label><input type="number" class="co-input" data-co="${idx}" data-field="gross" oninput="syncCoApplicant()"></div>
+      <div class="co-field"><label>Net Income / Month (₹)</label><input type="number" class="co-input" data-co="${idx}" data-field="net" oninput="syncCoApplicant()"></div>
+      <div class="co-field"><label>Annual Bonus (₹/yr)</label><input type="number" class="co-input" data-co="${idx}" data-field="bonus" oninput="syncCoApplicant()"></div>
+    </div>`;
+  } else if (profile === 'Sole Proprietor' || profile === 'Freelancer') {
+    finHtml = `<div class="co-field-row">
+      <div class="co-field"><label id="co-itr1-lbl-${idx}">ITR Year 1 (₹/yr)</label><input type="number" class="co-input" data-co="${idx}" data-field="itr1" oninput="syncCoApplicant()"></div>
+      <div class="co-field"><label>ITR Year 2 (₹/yr)</label><input type="number" class="co-input" data-co="${idx}" data-field="itr2" oninput="syncCoApplicant()"></div>
+      <div class="co-field"><label>ITR Year 3 (₹/yr)</label><input type="number" class="co-input" data-co="${idx}" data-field="itr3" oninput="syncCoApplicant()"></div>
+    </div>`;
+  } else if (profile === 'Business Owner - Pvt Ltd') {
+    finHtml = `<div class="co-field-row">
+      <div class="co-field"><label>Gross Salary / Month (₹)</label><input type="number" class="co-input" data-co="${idx}" data-field="dgross" oninput="syncCoApplicant()"></div>
+      <div class="co-field"><label>Net Salary / Month (₹)</label><input type="number" class="co-input" data-co="${idx}" data-field="dnet" oninput="syncCoApplicant()"></div>
+      <div class="co-field"><label>Total Income Latest Yr (₹, incl. bonus)</label><input type="number" class="co-input" data-co="${idx}" data-field="dtotal" oninput="syncCoApplicant()"></div>
+    </div>`;
+  }
+  fin.innerHTML = finHtml;
+}
+
+function removeCoApplicant(idx) {
+  const card = document.getElementById('co-card-' + idx);
+  if (card) card.remove();
+  syncCoApplicant();
+}
+
+function getCoVal(idx, field) {
+  const el = document.querySelector(`[data-co="${idx}"][data-field="${field}"]`);
+  return el ? el.value : '';
+}
+
+function syncCoApplicant() {
+  // Sync first co-applicant into the legacy hidden fields for canvas
+  const cards = document.querySelectorAll('.co-card');
+  if (cards.length === 0) {
+    $('coName').value = '';
+    $('coAge').value = '';
+    $('coCibil').value = '';
+    $('coProfile').value = 'Not Employed';
+    $('propCoOwner').value = '';
+    $('coCompany').value = '';
+    $('c_vintage').value = '';
+    $('coBusiness').value = '';
+    $('c_gross').value = '';
+    $('c_net').value = '';
+    $('c_bonus').value = '';
+    $('c_itr1').value = '';
+    $('c_itr2').value = '';
+    $('c_itr3').value = '';
+    $('c_otherIncome').value = '';
+    $('c_existingEmi').value = '';
+    $('c_dgross').value = '';
+    $('c_dnet').value = '';
+    $('c_dtotal').value = '';
+  } else {
+    const firstIdx = parseInt(cards[0].id.replace('co-card-', ''));
+    $('coName').value    = getCoVal(firstIdx, 'name');
+    $('coAge').value     = getCoVal(firstIdx, 'age');
+    $('coCibil').value   = getCoVal(firstIdx, 'cibil');
+    const p = getCoVal(firstIdx, 'profile') || 'Not Employed';
+    $('coProfile').value = p;
+    $('propCoOwner').value = getCoVal(firstIdx, 'propCoOwner');
+    $('coCompany').value = getCoVal(firstIdx, 'company');
+    $('c_vintage').value = getCoVal(firstIdx, 'vintage');
+    $('coBusiness').value = getCoVal(firstIdx, 'business');
+    $('c_gross').value   = getCoVal(firstIdx, 'gross');
+    $('c_net').value     = getCoVal(firstIdx, 'net');
+    $('c_bonus').value   = getCoVal(firstIdx, 'bonus');
+    $('c_itr1').value    = getCoVal(firstIdx, 'itr1');
+    $('c_itr2').value    = getCoVal(firstIdx, 'itr2');
+    $('c_itr3').value    = getCoVal(firstIdx, 'itr3');
+    $('c_otherIncome').value  = getCoVal(firstIdx, 'otherIncome');
+    $('c_existingEmi').value  = getCoVal(firstIdx, 'existingEmi');
+    $('c_dgross').value  = getCoVal(firstIdx, 'dgross');
+    $('c_dnet').value    = getCoVal(firstIdx, 'dnet');
+    $('c_dtotal').value  = getCoVal(firstIdx, 'dtotal');
+  }
+  draw();
+}
+
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes(id)) b.classList.add('active');
+  });
+  if (id === 'offer-gen') syncOfferInputs();
+}
+
+// ============================================================
+// OFFER GENERATOR
+// ============================================================
+const RATE_MATRIX = [
+  { min: -1, max:  0, band: 'NTC (Score -1 / 0)',    hdfc:8.25, boi:7.90, axis:8.50, canara:8.00, bajaj:8.75, bom:8.75, federal:8.75 },
+  { min:  1, max:699, band: 'Below 700',              hdfc:9.75, boi:null, axis:10.25,canara:10.10,bajaj:10.50,bom:10.50,federal:10.50 },
+  { min:700, max:724, band: '700 – 724',              hdfc:9.00, boi:8.40, axis:8.75, canara:8.50, bajaj:9.00, bom:9.00, federal:9.00 },
+  { min:725, max:759, band: '725 – 759',              hdfc:8.10, boi:7.90, axis:8.25, canara:8.00, bajaj:8.50, bom:8.50, federal:8.50 },
+  { min:760, max:799, band: '760 – 799',              hdfc:7.70, boi:7.40, axis:7.80, canara:7.55, bajaj:8.00, bom:8.00, federal:8.00 },
+  { min:800, max:824, band: '800 – 824',              hdfc:7.55, boi:7.25, axis:7.65, canara:7.40, bajaj:7.80, bom:7.80, federal:7.80 },
+  { min:825, max:839, band: '825 – 839',              hdfc:7.25, boi:7.25, axis:7.55, canara:7.30, bajaj:7.65, bom:7.65, federal:7.65 },
+  { min:840, max:900, band: '840 and above',          hdfc:7.35, boi:7.10, axis:7.45, canara:7.15, bajaj:7.50, bom:7.50, federal:7.50 },
+];
+const BANK_FOIR  = { hdfc:60, boi:60, axis:75, canara:60, bajaj:70, bom:70, federal:65 };
+const BANK_LABEL = { hdfc:'HDFC', boi:'BOI', axis:'AXIS', canara:'Canara', bajaj:'Bajaj', bom:'BOM', federal:'Federal' };
+const BANK_TYPE  = { hdfc:'pvt', boi:'psu', axis:'pvt', canara:'psu', bajaj:'pvt', bom:'psu', federal:'pvt' };
+
+function getRateBand(cibil) {
+  return RATE_MATRIX.find(r => cibil >= r.min && cibil <= r.max) || null;
+}
+
+function calcEMI(principal, roiPct, months) {
+  const r = roiPct / 12 / 100;
+  if (r === 0) return principal / months;
+  return principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months) - 1);
+}
+
+function fmtINRLakh(n) {
+  if (n >= 1e7) return '₹' + (n/1e7).toFixed(2) + ' Cr';
+  if (n >= 1e5) return '₹' + (n/1e5).toFixed(1) + ' L';
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+function syncAndGenerate() {
+  const name    = $('name').value || '—';
+  const age     = parseFloat($('age').value) || 0;
+  const cibil   = parseFloat($('cibil').value) || 0;
+  const loanCr  = parseFloat($('loan').value) || 0;
+  const loan    = loanCr * 1e7;
+
+  // Sum net salaries and existing EMIs across all applicants
+  let totalNet = parseFloat($('m_net').value) || parseFloat($('m_dnet').value) || 0;
+  let totalEmi = parseFloat($('m_existingEmi').value) || 0;
+  document.querySelectorAll('.co-card').forEach(card => {
+    const idx = parseInt(card.id.replace('co-card-', ''));
+    totalNet += parseFloat(getCoVal(idx, 'net')) || parseFloat(getCoVal(idx, 'dnet')) || 0;
+    totalEmi += parseFloat(getCoVal(idx, 'existingEmi')) || 0;
+  });
+  const maxEmiEligibility = Math.max(0, (totalNet - totalEmi) * 0.60);
+
+  const band = getRateBand(cibil);
+  const tPvt = age > 0 ? Math.max(1, Math.min(30, 65 - age)) : 0;
+  const tPsu = age > 0 ? Math.max(1, Math.min(30, 70 - age)) : 0;
+
+  const banks = ['hdfc','boi','axis','canara','bajaj','bom','federal'];
+  const rows = banks.map(k => {
+    const roi = band ? band[k] : null;
+    const isPsu = BANK_TYPE[k] === 'psu';
+    const tenure = isPsu ? tPsu : tPvt;
+    const emiOnLoan = (roi && loan > 0 && tenure > 0) ? calcEMI(loan, roi, tenure*12) : null;
+    const fits = emiOnLoan !== null ? emiOnLoan <= maxEmiEligibility : null;
+    return { key:k, bank: BANK_LABEL[k], roi, tenure, emiOnLoan, fits, ineligible: roi === null };
+  });
+
+  const validRows = rows.filter(r => !r.ineligible && r.roi !== null);
+  const bestRoi = validRows.length ? Math.min(...validRows.map(r => r.roi)) : null;
+
+  // Client summary — two rows
+  const topItems = [
+    { label: 'Customer',            value: name },
+    { label: 'Age',                 value: age ? age + ' years' : '—' },
+    { label: 'CIBIL Score',         value: cibil || '—' },
+    { label: 'CIBIL Band',          value: band ? band.band : '—' },
+  ];
+  const bottomItems = [
+    { label: 'Loan Required',       value: loanCr ? '\u20B9' + loanCr.toFixed(2) + ' Cr' : '—' },
+    { label: 'Max EMI Eligibility', value: maxEmiEligibility > 0 ? fmtINRLakh(maxEmiEligibility) + ' /mo' : '—' },
+  ];
+
+  const iH = (item, last=false) => {
+    const border = last ? '' : 'border-right:1px solid var(--line);margin-right:24px;';
+    return `<div style="padding:8px 24px 8px 0;${border}">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">${item.label}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--dark);">${item.value}</div>
+    </div>`;
+  };
+
+  let html = `<div style="background:var(--orange-light);border-radius:10px;padding:16px 24px;margin-bottom:16px;">`;
+  html += `<div style="display:flex;flex-wrap:wrap;align-items:flex-start;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line);">`;
+  topItems.forEach((item, i) => { html += iH(item, i === topItems.length - 1); });
+  html += `</div><div style="display:flex;flex-wrap:wrap;align-items:flex-start;">`;
+  bottomItems.forEach((item, i) => { html += iH(item, i === bottomItems.length - 1); });
+  html += `</div></div>`;
+
+  // Table
+  const psuBanks = ['boi','bom','canara'];
+  const pvtBanks = ['hdfc','axis','federal','bajaj'];
+  const allBanks = [...psuBanks, ...pvtBanks];
+  const bankRows = allBanks.map(k => rows.find(r => r.key === k));
+
+  html += `<div style="overflow-x:auto;"><table class="og-table">`;
+
+  // Header row 1: group labels with solid colour demarcation
+  html += `<thead><tr><th style="min-width:160px;background:#fff;border-bottom:none;"></th>`;
+  html += `<th colspan="${psuBanks.length}" style="text-align:center;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#5B7FA6;border-left:3px solid #5B7FA6;padding:10px 14px;border-bottom:none;">PSU BANKS</th>`;
+  html += `<th colspan="${pvtBanks.length}" style="text-align:center;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:var(--orange);border-left:3px solid var(--orange);padding:10px 14px;border-bottom:none;">PRIVATE BANKS</th>`;
+  html += `</tr>`;
+
+  // Header row 2: bank names
+  html += `<tr><th style="min-width:160px;"></th>`;
+  bankRows.forEach((r, i) => {
+    const isBest = r.roi === bestRoi;
+    const isFirstPvt = i === psuBanks.length;
+    const bl = i === 0 ? '3px solid #5B7FA6' : (isFirstPvt ? '3px solid var(--orange)' : '');
+    html += `<th class="bank-col${isBest?' best':''}" style="${bl?'border-left:'+bl+';':''}font-size:14px;">${r.bank}${isBest?` <span style="font-size:9px;background:var(--orange);color:#fff;border-radius:3px;padding:1px 5px;">BEST</span>`:''}`;
+    html += `</th>`;
+  });
+  html += `</tr></thead><tbody>`;
+
+  const bc = (r, i, content, extraCls='') => {
+    const isBest = r.roi === bestRoi;
+    const isFirstPvt = i === psuBanks.length;
+    const bl = i === 0 ? '3px solid #5B7FA6' : (isFirstPvt ? '3px solid var(--orange)' : '');
+    return `<td class="bank-cell${isBest?' best':''}${extraCls?' '+extraCls:''}" style="${bl?'border-left:'+bl+';':''}">${content}</td>`;
+  };
+
+  // ROI
+  html += `<tr><td class="row-label">ROI</td>`;
+  bankRows.forEach((r,i) => {
+    if (r.ineligible) html += bc(r, i, '—', 'ineligible');
+    else html += bc(r, i, r.roi.toFixed(2)+'%', 'roi'+(r.roi===bestRoi?' best':''));
+  });
+  html += `</tr>`;
+
+  // Tenure
+  html += `<tr><td class="row-label">Tenure</td>`;
+  bankRows.forEach((r,i) => html += bc(r, i, r.ineligible ? '—' : r.tenure+' yrs'));
+  html += `</tr>`;
+
+  // EMI on Loan
+  html += `<tr><td class="row-label">EMI on Loan</td>`;
+  bankRows.forEach((r,i) => {
+    if (r.ineligible) html += bc(r, i, 'Review only', 'ineligible');
+    else if (!r.emiOnLoan) html += bc(r, i, '—');
+    else html += bc(r, i, fmtINRLakh(r.emiOnLoan)+'/mo', r.fits?'fits':'exceeds');
+  });
+  html += `</tr>`;
+
+  html += `</tbody></table></div>`;
+  html += `<p class="hint" style="margin-top:10px;">Green = EMI within Max EMI Eligibility · Red = EMI exceeds capacity · BEST = lowest ROI for this CIBIL band · Max EMI Eligibility = (Total Net Salary across all applicants − Total Existing EMIs) × 60%</p>`;
+
+  document.getElementById('og_table_wrap').innerHTML = html;
+  document.getElementById('og_dlJpg').style.display = '';
+}
+
+// Keep syncOfferInputs as alias for tab switching
+function syncOfferInputs() { syncAndGenerate(); }
+
+
+function drawOffer(name, age, cibil, loanCr, bandLabel, tPvt, tPsu, rows, bestRoi) {
+  const OC = {
+    orange:'#FF6F38', orangeDeep:'#E06231', orangeLight:'#FFF2ED',
+    ink:'#1A1A1A', ink2:'#5B5B5B', muted:'#9B9B9B', line:'#EFE3DB', white:'#FFFFFF',
+  };
+  const SC = 2, PW = 1241, MG = 72, CW = PW - 2*MG;
+  const canvas = document.getElementById('og_sheet');
+  canvas.width  = PW * SC;
+  canvas.height = 1600 * SC;
+  const ctx = canvas.getContext('2d');
+  const f = (px, w=400) => `${w} ${px*SC}px 'Poppins','Segoe UI',Arial,sans-serif`;
+  const rr = (x,y,w,h,r) => { ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); };
+  const ls = v => { ctx.letterSpacing = (v||0)+'px'; };
+
+  ctx.fillStyle = OC.white; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Header band
+  const bH = 160;
+  ctx.fillStyle = OC.orange; ctx.fillRect(0,0,PW*SC,bH*SC);
+  ctx.fillStyle = OC.orangeDeep; ctx.fillRect(0,(bH-5)*SC,PW*SC,5*SC);
+  ctx.fillStyle = OC.white; ctx.font = f(13,700); ls(120);
+  ctx.fillText('TRUVA HOME LOANS', MG*SC, 52*SC);
+  ctx.font = f(32,700); ls(0);
+  ctx.fillText(name, MG*SC, 104*SC);
+  ctx.font = f(16,500);
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.fillText('Home Loan Offer — Bank-wise Comparison', MG*SC, 138*SC);
+
+  // Date top-right
+  const today = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  ctx.font = f(11,600); ls(80);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = 'rgba(255,255,255,0.75)';
+  ctx.fillText('OFFER SHEET', (PW-MG)*SC, 52*SC);
+  ctx.font = f(12,600); ls(0);
+  ctx.fillStyle = OC.white;
+  ctx.fillText(today, (PW-MG)*SC, 76*SC);
+  ctx.textAlign = 'left';
+
+  let y = bH + 36;
+
+  // KPI strip
+  const kpis = [['Age', age + ' yrs'], ['CIBIL Score', String(cibil)], ['Loan Required', '₹' + loanCr.toFixed(2) + ' Cr'], ['CIBIL Band', bandLabel]];
+  const kw = (CW - 3*14) / 4;
+  kpis.forEach((k,i) => {
+    const x = MG + i*(kw+14);
+    rr(x*SC, y*SC, kw*SC, 80*SC, 10*SC);
+    ctx.fillStyle = OC.orange; ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = f(10,700); ls(90);
+    ctx.fillText(k[0].toUpperCase(), (x+14)*SC, (y+24)*SC);
+    ctx.fillStyle = OC.white; ctx.font = f(20,700); ls(0);
+    let vpx = 20; ctx.font = f(vpx,700);
+    while(ctx.measureText(k[1]).width > (kw-28)*SC && vpx>11){vpx-=0.5;ctx.font=f(vpx,700);}
+    ctx.fillText(k[1], (x+14)*SC, (y+58)*SC);
+  });
+  y += 80 + 36;
+
+  // Section heading
+  ctx.fillStyle = OC.orange; ctx.font = f(13,700); ls(80);
+  ctx.fillText('BANK-WISE RATE & ELIGIBILITY', MG*SC, y*SC);
+  ctx.strokeStyle = OC.line; ctx.lineWidth = 1.5*SC;
+  const hw = ctx.measureText('BANK-WISE RATE & ELIGIBILITY').width;
+  ctx.beginPath(); ctx.moveTo(MG*SC+hw+16*SC,(y-4)*SC); ctx.lineTo((PW-MG)*SC,(y-4)*SC); ctx.stroke();
+  ls(0);
+  y += 20;
+
+  // Table header
+  const cols = [180, 80, 80, 160, 160, 140];
+  const colX = [MG];
+  cols.slice(0,-1).forEach((w,i) => colX.push(colX[i]+w+16));
+  const hdrs = ['Bank','ROI','Tenure','EMI on Loan','Max EMI Capacity',''];
+  ctx.fillStyle = OC.muted; ctx.font = f(10,700); ls(60);
+  hdrs.forEach((h,i) => { if(h) ctx.fillText(h.toUpperCase(), colX[i]*SC, y*SC); });
+  ls(0);
+  y += 8;
+  ctx.strokeStyle = OC.line; ctx.lineWidth = 1*SC;
+  ctx.beginPath(); ctx.moveTo(MG*SC,y*SC); ctx.lineTo((PW-MG)*SC,y*SC); ctx.stroke();
+  y += 18;
+
+  // Find best ROI (passed in)
+
+  rows.forEach(r => {
+    const isBest = r.roi === bestRoi && !r.ineligible;
+    const rowH = 48;
+
+    if (isBest) {
+      rr(MG*SC, (y-6)*SC, CW*SC, (rowH+4)*SC, 8*SC);
+      ctx.fillStyle = OC.orangeLight; ctx.fill();
+    }
+
+    // Bank name
+    ctx.fillStyle = OC.ink; ctx.font = f(14,700); ls(0);
+    ctx.fillText(r.bank, colX[0]*SC, (y+26)*SC);
+    if (isBest) {
+      const bw = ctx.measureText(r.bank).width;
+      rr(colX[0]*SC+bw+10*SC, (y+10)*SC, 52*SC, 20*SC, 4*SC);
+      ctx.fillStyle = OC.orange; ctx.fill();
+      ctx.fillStyle = OC.white; ctx.font = f(8,700); ls(40);
+      ctx.fillText('BEST', colX[0]*SC+bw+16*SC, (y+24)*SC);
+      ls(0);
+    }
+
+    if (r.ineligible) {
+      ctx.fillStyle = OC.muted; ctx.font = f(12,500);
+      ctx.fillText('Review only — no fresh loans', colX[1]*SC, (y+26)*SC);
+    } else {
+      // ROI
+      ctx.fillStyle = isBest ? OC.orange : OC.ink;
+      ctx.font = f(15,700);
+      ctx.fillText(r.roi.toFixed(2) + '%', colX[1]*SC, (y+26)*SC);
+      // Tenure
+      ctx.fillStyle = OC.ink; ctx.font = f(14,600);
+      ctx.fillText(r.tenure + ' yrs', colX[2]*SC, (y+26)*SC);
+      // EMI on loan
+      ctx.font = f(14,600);
+      ctx.fillStyle = r.emiOnLoan ? (r.fits ? OC.ink : '#C0392B') : OC.muted;
+      ctx.fillText(r.emiOnLoan ? fmtINRLakh(r.emiOnLoan)+' /mo' : '—', colX[3]*SC, (y+26)*SC);
+      // Max EMI
+      ctx.fillStyle = OC.ink2; ctx.font = f(13,500);
+      ctx.fillText(fmtINRLakh(r.maxEmi)+' /mo', colX[4]*SC, (y+26)*SC);
+      // Fits flag
+      if (r.fits !== null) {
+        const flag = r.fits ? '✓ Fits' : '✗ Exceeds capacity';
+        ctx.fillStyle = r.fits ? '#27AE60' : '#C0392B';
+        ctx.font = f(12,700);
+        ctx.fillText(flag, colX[5]*SC, (y+26)*SC);
+      }
+    }
+
+    y += rowH;
+    ctx.strokeStyle = OC.line; ctx.lineWidth = 1*SC;
+    ctx.beginPath(); ctx.moveTo(MG*SC,y*SC); ctx.lineTo((PW-MG)*SC,y*SC); ctx.stroke();
+    y += 4;
+  });
+
+  y += 24;
+
+  // Footnote
+  ctx.fillStyle = OC.muted; ctx.font = f(10.5,500);
+  ctx.fillText('EMI on Loan = EMI for the exact loan amount requested at each bank\'s rate and tenure.  Max EMI Capacity = Gross Income × Bank FOIR − Existing EMIs.  ✗ means the requested loan EMI exceeds the customer\'s capacity at that bank.', MG*SC, y*SC);
+  y += 20;
+  ctx.fillText('Tenure: Private banks capped at age 65 · PSU banks capped at age 70 · Max 30 years.  BOI below CIBIL 700 = review only, no fresh loans.', MG*SC, y*SC);
+  y += 40;
+
+  // Footer line
+  ctx.strokeStyle = OC.line; ctx.lineWidth = 1*SC;
+  ctx.beginPath(); ctx.moveTo(MG*SC,y*SC); ctx.lineTo((PW-MG)*SC,y*SC); ctx.stroke();
+  y += 22;
+  ctx.fillStyle = OC.muted; ctx.font = f(11,600);
+  ctx.fillText('Prepared by Truva Home Loans  ·  ' + today, MG*SC, y*SC);
+  y += 30;
+
+  // Crop
+  const finalH = Math.min((y+8)*SC, 1600*SC);
+  const img = ctx.getImageData(0,0,canvas.width,finalH);
+  canvas.height = finalH;
+  ctx.putImageData(img,0,0);
+}
+
+document.getElementById('og_dlJpg').addEventListener('click', () => {
+  const panel = document.querySelector('#tab-offer-gen .panel');
+  const name = $('name').value || 'Client';
+  const filename = name.replace(/[^a-z0-9]+/gi,'_') + '_Offer_Sheet.jpg';
+
+  // Use html2canvas to snapshot the visible offer panel
+  html2canvas(panel, {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false,
+  }).then(canvas => {
+    const a = document.createElement('a');
+    a.download = filename;
+    a.href = canvas.toDataURL('image/jpeg', 0.95);
+    a.click();
+  });
+});
+
+// ============================================================
+// WIZARD NAVIGATION
+// ============================================================
+let wizStep = 0;
+const WIZ_TOTAL = 8;
+
+function wizGo(dir) {
+  const prev = wizStep;
+  wizStep = Math.max(0, Math.min(WIZ_TOTAL - 1, wizStep + dir));
+  if (wizStep === prev && dir !== 0) return;
+
+  const steps = document.querySelectorAll('#wizSteps .wiz-step');
+  const panes = document.querySelectorAll('#tab-fact-sheet .wiz-pane');
+
+  // Mark steps
+  steps.forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    if (i < wizStep) el.classList.add('done');
+    if (i === wizStep) el.classList.add('active');
+  });
+
+  // Show/hide panes
+  panes.forEach((el, i) => {
+    el.classList.toggle('active', i === wizStep);
+  });
+
+  // Back button visibility
+  document.getElementById('wizBack').style.visibility = wizStep === 0 ? 'hidden' : 'visible';
+
+  // Next vs Generate on last step
+  const nextBtn = document.getElementById('wizNext');
+  const preview = document.getElementById('previewSection');
+  if (wizStep === WIZ_TOTAL - 1) {
+    nextBtn.style.display = 'none';
+    preview.style.display = '';
+    draw();
+  } else {
+    nextBtn.style.display = '';
+    preview.style.display = 'none';
+  }
+
+  // Keep ltvOut synced in nav pill (step 2)
+
+  draw();
+}
+
+// Allow clicking completed steps to jump back
+document.querySelectorAll('#wizSteps .wiz-step').forEach((el, i) => {
+  el.addEventListener('click', () => {
+    if (i < wizStep) { wizStep = i; wizGo(0); }
+  });
+});
+
+
+draw();
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(draw);
+  document.fonts.load("700 32px 'Poppins'").then(draw).catch(() => {});
+}
+</script>
+</body>
+</html>
